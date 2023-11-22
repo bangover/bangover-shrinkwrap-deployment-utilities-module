@@ -62,6 +62,9 @@
 		<lombok.version>1.18.18</lombok.version>
 		<lombok.plugin.version>1.18.18.0</lombok.plugin.version>
 		<junit4.version>4.13.1</junit4.version>
+		<shrinkwrap.version>1.2.2</shrinkwrap.version>
+		<shrinkwrap.resolver.version>2.1.1</shrinkwrap.resolver.version>
+		<shrinkwrap.descriptors.version>2.0.0-alpha-7</shrinkwrap.descriptors.version>
 	</properties>
 
 	<dependencyManagement>
@@ -73,6 +76,35 @@
 				<scope>provided</scope>
 			</dependency>
 
+			<dependency>
+				<groupId>cloud.bangover</groupId>
+				<artifactId>bangover-commons</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jboss.shrinkwrap</groupId>
+				<artifactId>shrinkwrap-bom</artifactId>
+				<version>${shrinkwrap.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jboss.shrinkwrap.resolver</groupId>
+				<artifactId>shrinkwrap-resolver-bom</artifactId>
+				<version>${shrinkwrap.resolver.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jboss.shrinkwrap.descriptors</groupId>
+				<artifactId>shrinkwrap-descriptors-bom</artifactId>
+				<version>${shrinkwrap.descriptors.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 
 			<dependency>
 				<groupId>junit</groupId>
