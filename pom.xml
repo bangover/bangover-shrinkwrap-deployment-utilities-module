@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>cloud.bangover.deployment</groupId>
+	<artifactId>bangover-shrinkwrap-microdeployment-module</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>bangover-shrinkwrap-archiver</module>
+	</modules>
+
+	<repositories>
+		<repository>
+			<id>central</id>
+			<name>Maven central proxy repository</name>
+			<url>http://nexus.bangover.cloud/repository/maven-central/</url>
+		</repository>
+
+		<repository>
+			<id>bagover-releases</id>
+			<name>Bangover release repository</name>
+			<url>http://nexus.bangover.cloud/repository/maven-bangover-releases/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+
+		<repository>
+			<id>bangover-snapshots</id>
+			<name>Bangover snapshots repository</name>
+			<url>
+				http://nexus.bangover.cloud/repository/maven-bangover-snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<distributionManagement>
+		<repository>
+			<id>nexus.bagover.cloud</id>
+			<name>Bangover release repository</name>
+			<url>http://nexus.bangover.cloud/repository/maven-bangover-releases/</url>
+		</repository>
+
+		<snapshotRepository>
+			<id>nexus.bagover.cloud</id>
+			<name>Bangover snapshots repository</name>
+			<url>
+				http://nexus.bangover.cloud/repository/maven-bangover-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<lombok.version>1.18.18</lombok.version>
+		<lombok.plugin.version>1.18.18.0</lombok.plugin.version>
+		<junit4.version>4.13.1</junit4.version>
+		<shrinkwrap.version>1.2.2</shrinkwrap.version>
+		<shrinkwrap.resolver.version>2.1.1</shrinkwrap.resolver.version>
+		<shrinkwrap.descriptors.version>2.0.0-alpha-7</shrinkwrap.descriptors.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>cloud.bangover</groupId>
+				<artifactId>bangover-commons</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jboss.shrinkwrap</groupId>
+				<artifactId>shrinkwrap-bom</artifactId>
+				<version>${shrinkwrap.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jboss.shrinkwrap.resolver</groupId>
+				<artifactId>shrinkwrap-resolver-bom</artifactId>
+				<version>${shrinkwrap.resolver.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jboss.shrinkwrap.descriptors</groupId>
+				<artifactId>shrinkwrap-descriptors-bom</artifactId>
+				<version>${shrinkwrap.descriptors.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit4.version}</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>2.14.2</version>
+			</plugin>
+		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.projectlombok</groupId>
+					<artifactId>lombok-maven-plugin</artifactId>
+					<version>${lombok.plugin.version}</version>
+					<executions>
+						<execution>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>delombok</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>3.1.2</version>
+					<dependencies>
+						<dependency>
+							<groupId>com.puppycrawl.tools</groupId>
+							<artifactId>checkstyle</artifactId>
+							<version>8.44</version>
+						</dependency>
+					</dependencies>
+					<configuration>
+						<configLocation>checkstyle.xml</configLocation>
+						<encoding>UTF-8</encoding>
+						<consoleOutput>true</consoleOutput>
+						<failsOnError>false</failsOnError>
+						<linkXRef>false</linkXRef>
+					</configuration>
+					<executions>
+						<execution>
+							<id>validate</id>
+							<phase>validate</phase>
+							<goals>
+								<goal>check</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>3.2.1</version>
+					<executions>
+						<execution>
+							<id>attach-sources</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>jar-no-fork</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.8.0</version>
+
+					<configuration>
+						<annotationProcessorPaths>
+							<annotationProcessorPath>
+								<groupId>org.projectlombok</groupId>
+								<artifactId>lombok</artifactId>
+								<version>${lombok.version}</version>
+							</annotationProcessorPath>
+						</annotationProcessorPaths>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.22.1</version>
+					<configuration>
+						<useFile>false</useFile>
+						<includes>
+							<include>**/*Test.java</include>
+						</includes>
+					</configuration>
+
+					<dependencies>
+						<dependency>
+							<groupId>org.slf4j</groupId>
+							<artifactId>slf4j-api</artifactId>
+							<version>1.7.30</version>
+						</dependency>
+
+						<dependency>
+							<groupId>org.slf4j</groupId>
+							<artifactId>slf4j-simple</artifactId>
+							<version>1.7.30</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>3.3.1</version>
+					<executions>
+						<execution>
+							<id>attach-javadoc</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+							<configuration>
+								<sourcepath>${basedir}/src/main/java</sourcepath>
+								<debug>true</debug>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.8.2</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>javadoc-no-fork</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+				<configuration>
+					<show>public</show>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
+</project>
